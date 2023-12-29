@@ -22,7 +22,7 @@ const Notes = () => {
   };
   
   const saveHandler = () => {
-    if(!inputText) { alert("Cant save blanks"); return; }
+    if(!inputText) { alert("Can't save blanks"); return; }
     setNotes((prevState) =>[
       {
         id: uuid(),
