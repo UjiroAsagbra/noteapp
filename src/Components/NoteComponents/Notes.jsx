@@ -19,31 +19,30 @@ const Notes = () => {
 
   const textHandler = (e) => {
     setInputText(e.target.value);
-};
+  };
   
-const saveHandler = () => {
-   setNotes((prevState) =>[
-    {
-      id: uuid(),
-      text: inputText,
-    },   ...prevState,
-  ]);
-  //clear the textarea
-  setInputText("");
-};
+  const saveHandler = () => {
+    if(!inputText) { alert("Cant save blanks"); return; }
+    setNotes((prevState) =>[
+      {
+        id: uuid(),
+        text: inputText,
+      },   ...prevState,
+    ]);
+    //clear the textarea
+    setInputText("");
+  };
 
-const inputDate = new Date().toDateString()
+  const inputDate = new Date().toDateString()
 
-
-const deleteNote = (id) => {
-  let text = "Are you sure you want to delete?";
-  if (confirm(text) == true) {
-    const filteredNotes = notes.filter((note) => note.id !== id);
-  setNotes(filteredNotes);
-  }
-  
-};
-
+  const deleteNote = (id) => {
+    let text = "Are you sure you want to delete?";
+    if (confirm(text) == true) {
+      const filteredNotes = notes.filter((note) => note.id !== id);
+    setNotes(filteredNotes);
+    }
+    
+  };
 
   return (
     <div className="notes">
@@ -65,4 +64,5 @@ const deleteNote = (id) => {
     </div>
   );
 }
+
 export default Notes;
