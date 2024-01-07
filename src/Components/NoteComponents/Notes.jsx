@@ -11,11 +11,18 @@ const Notes = () => {
     return JSON.parse(localValue)
   })
 
-  const [inputText, setInputText] = useState("");
-
   useEffect(() => {
     localStorage.setItem("Notes", JSON.stringify(notes));
   }, [notes]);
+
+  const [inputText, setInputText] = useState("");
+
+  const [editToggle, setEditToggle] = useState(null)
+
+  const editHandler = (id,text) => {
+    setEditToggle(id)
+    setInputText(text)
+}
 
   const textHandler = (e) => {
     setInputText(e.target.value);
@@ -23,14 +30,22 @@ const Notes = () => {
   
   const saveHandler = () => {
     if(!inputText) { alert("Can't save blanks"); return; }
+    if(editToggle) {
+      setNotes(notes.map((note) => (
+          note.id === editToggle ?
+          {...note, text: inputText}
+          : note
+      )))
+  } else {
     setNotes((prevState) =>[
       {
         id: uuid(),
         text: inputText,
       },   ...prevState,
-    ]);
+    ])};
     //clear the textarea
     setInputText("");
+    setEditToggle(null)
   };
 
   const inputDate = new Date().toDateString()
@@ -46,17 +61,27 @@ const Notes = () => {
 
   return (
     <div className="notes">
+       {
+            editToggle === null ? 
+            <NewNote  
+            textHandler={textHandler}
+            saveHandler={saveHandler}
+            inputText={inputText}/> : <></>
+        }
+       {
+            notes.map((note) => (
+                editToggle === note.id ?
        <NewNote  
           textHandler={textHandler}
           saveHandler={saveHandler}
           inputText={inputText}/>
-
-      {notes.map((note) => (
+          :
       <Note
         key={note.id}
         id={note.id}
         text={note.text}
         inputDate={inputDate}
+        editHandler = {editHandler}
         deleteNote={deleteNote}
       />
     ))}
