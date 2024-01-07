@@ -5,89 +5,89 @@ import Note from "./Note";
 import NewNote from "./NewNote";
 
 const Notes = () => {
-  const [notes, setNotes] = useState(() => {
-    const localValue = localStorage.getItem('Notes')
-    if(localValue==null) return []
-    return JSON.parse(localValue)
-  })
+        const [notes, setNotes] = useState(() => {
+          const localValue = localStorage.getItem('Notes')
+          if(localValue==null) return []
+          return JSON.parse(localValue)
+        })
 
-  useEffect(() => {
-    localStorage.setItem("Notes", JSON.stringify(notes));
-  }, [notes]);
+        useEffect(() => {
+              localStorage.setItem("Notes", JSON.stringify(notes));
+            }, [notes]);
 
-  const [inputText, setInputText] = useState("");
+            const [inputText, setInputText] = useState("");
 
-  const [editToggle, setEditToggle] = useState(null)
+            const [editToggle, setEditToggle] = useState(false)
 
-  const editHandler = (id,text) => {
-    setEditToggle(id)
-    setInputText(text)
-}
+            const handleEdit = (id,text) => {
+              setEditToggle(id)
+              setInputText(text)
+          }
 
-  const textHandler = (e) => {
-    setInputText(e.target.value);
-  };
-  
-  const saveHandler = () => {
-    if(!inputText) { alert("Can't save blanks"); return; }
-    if(editToggle) {
-      setNotes(notes.map((note) => (
-          note.id === editToggle ?
-          {...note, text: inputText}
-          : note
-      )))
-  } else {
-    setNotes((prevState) =>[
-      {
-        id: uuid(),
-        text: inputText,
-      },   ...prevState,
-    ])};
-    //clear the textarea
-    setInputText("");
-    setEditToggle(null)
-  };
+        const handleText = (e) => {
+              setInputText(e.target.value);
+            };
+            
+            const handleSave = () => {
+              if(!inputText) { alert("Can't save blanks"); return; }
+              if(editToggle) {
+                setNotes(notes.map((note) => (
+                    note.id === editToggle ?
+                    {...note, text: inputText}
+                    : note
+                )))
+            } else {
+              setNotes((prevState) =>[
+                {
+                  id: uuid(),
+                  text: inputText,
+                },   ...prevState,
+              ])};
+              //clear the textarea
+              setInputText("");
+              setEditToggle(null)
+            };
 
-  const inputDate = new Date().toDateString()
+        const inputDate = new Date().toDateString()
 
-  const deleteNote = (id) => {
-    let text = "Are you sure you want to delete?";
-    if (confirm(text) == true) {
-      const filteredNotes = notes.filter((note) => note.id !== id);
-    setNotes(filteredNotes);
-    }
-    
-  };
+        const handleDelete = (id) => {
+              let text = "Are you sure you want to delete?";
+              if (confirm(text) == true) {
+                const filteredNotes = notes.filter((note) => note.id !== id);
+              setNotes(filteredNotes);
+              }
+              
+            };
 
-  return (
-    <div className="notes">
-       {
-            editToggle === null ? 
+        return (
+          <div className="notes">
+            {
+                  editToggle === null ? 
+                  <NewNote  
+                  textHandler={handleText}
+                  saveHandler={handleSave}
+                  inputText={inputText}/> : <></>
+              }
+            {
+                  notes.map((note) => (
+                      editToggle === note.id ?
             <NewNote  
-            textHandler={textHandler}
-            saveHandler={saveHandler}
-            inputText={inputText}/> : <></>
-        }
-       {
-            notes.map((note) => (
-                editToggle === note.id ?
-       <NewNote  
-          textHandler={textHandler}
-          saveHandler={saveHandler}
-          inputText={inputText}/>
-          :
-      <Note
-        key={note.id}
-        id={note.id}
-        text={note.text}
-        inputDate={inputDate}
-        editHandler = {editHandler}
-        deleteNote={deleteNote}
-      />
-    ))}
-     
-    </div>
-  );
-}
+                textHandler={handleText}
+                saveHandler={handleSave}
+                inputText={inputText}/>
+                :
+            <Note
+              key={note.id}
+              id={note.id}
+              text={note.text}
+              inputDate={inputDate}
+              editHandler = {handleEdit}
+              deleteNote={handleDelete}
+            />
+          ))}
+          
+          </div>
+        );
+      }
 
 export default Notes;
