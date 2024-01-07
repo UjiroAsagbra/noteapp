@@ -41,7 +41,7 @@ const Notes = () => {
               ])};
               //clear the textarea
               setInputText("");
-              setEditToggle(null)
+              setEditToggle(false)
             };
 
         const inputDate = new Date().toDateString()
