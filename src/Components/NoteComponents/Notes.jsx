@@ -64,16 +64,16 @@ const Notes = () => {
             {
                   editToggle === null ? 
                   <NewNote  
-                  textHandler={handleText}
-                  saveHandler={handleSave}
+                  handleText={handleText}
+                  handleSave={handleSave}
                   inputText={inputText}/> : <></>
               }
             {
                   notes.map((note) => (
                       editToggle === note.id ?
             <NewNote  
-                textHandler={handleText}
-                saveHandler={handleSave}
+             handleText={handleText}
+                handleSave={handleSave}
                 inputText={inputText}/>
                 :
             <Note
@@ -81,8 +81,8 @@ const Notes = () => {
               id={note.id}
               text={note.text}
               inputDate={inputDate}
-              editHandler = {handleEdit}
-              deleteNote={handleDelete}
+              handleEdit = {handleEdit}
+              handleDelete={handleDelete}
             />
           ))}
           
