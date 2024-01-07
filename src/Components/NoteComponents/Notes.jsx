@@ -11,10 +11,6 @@ const Notes = () => {
           return JSON.parse(localValue)
         })
 
-        useEffect(() => {
-              localStorage.setItem("Notes", JSON.stringify(notes));
-            }, [notes]);
-
             const [inputText, setInputText] = useState("");
 
             const [editToggle, setEditToggle] = useState(false)
@@ -59,15 +55,21 @@ const Notes = () => {
               
             };
 
+            useEffect(() => {
+              localStorage.setItem("Notes", JSON.stringify(notes));
+            }, [notes]);
+
         return (
           <div className="notes">
-            {
-                  editToggle === null ? 
+            {     
+                  editToggle === false ? 
                   <NewNote  
                   handleText={handleText}
                   handleSave={handleSave}
                   inputText={inputText}/> : <></>
               }
+
+              
             {
                   notes.map((note) => (
                       editToggle === note.id ?
