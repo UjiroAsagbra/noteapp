@@ -37,6 +37,7 @@ const Notes = () => {
                 {
                   id: uuid(),
                   text: inputText,
+                  date: new Date().toDateString()
                 },   ...prevState,
               ])};
               //clear the textarea
@@ -44,7 +45,7 @@ const Notes = () => {
               setEditToggle(false)
             };
 
-        const inputDate = new Date().toDateString()
+        
 
         const handleDelete = (id) => {
               let text = "Are you sure you want to delete?";
@@ -82,7 +83,7 @@ const Notes = () => {
               key={note.id}
               id={note.id}
               text={note.text}
-              inputDate={inputDate}
+              date={note.date}
               handleEdit = {handleEdit}
               handleDelete={handleDelete}
             />
